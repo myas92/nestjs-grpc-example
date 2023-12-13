@@ -1,0 +1,47 @@
+version: "3.5"
+services:
+
+    db:
+        image: postgres
+        restart: always
+        environment:
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_DB=${DB_NAME}
+        container_name: postgres-db
+        volumes:
+          - ./pgdata/user-db-data:/var/lib/postgresql/data
+
+
+    api-gateway:
+      build: 
+        context: .
+        dockerfile: Dockerfile.gateway
+      image: yaserahmadi/gateway:latest
+      environment: 
+        - NODE_ENV=development
+        - PORT=3000
+        - GRPC_URL=${GRPC_URL}
+      ports: 
+        - "3000:3000"
+      container_name: api-gateway
+
+
+    app:
+      build: 
+        context: .
+        dockerfile: Dockerfile.user
+      image: yaserahmadi/user:latest
+      environment: 
+        - TOKEN_KEY=dfkurrrhnlsdfn
+        - NODE_ENV=development
+        - DB_NAME=${DB_NAME}
+        - DB_USER=${DB_USER}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_HOST=${DB_HOST}
+        - DB_PORT=${DB_PORT}
+      ports: 
+        - "50052:50052"
+      container_name: user-service
+      depends_on: 
+        - db

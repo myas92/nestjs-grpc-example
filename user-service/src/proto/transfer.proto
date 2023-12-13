@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package transferproto;
+
+service UserService {
+  rpc findAll(findAllRequest) returns (findAllResponse) {}
+  rpc create(createRequest) returns (createResponse) {}
+  rpc findOne(findOneRequest) returns (User) {}
+  rpc update(updateRequest) returns (updateResponse) {}
+  rpc remove(removeRequest) returns (removeResponse) {}
+}
+
+message findAllRequest {
+  string token = 1;
+}
+
+message findAllResponse {
+  repeated User users = 1;
+}
+
+message User {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  int32 age = 4;
+}
+
+message createRequest {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  int32 age = 4;
+  string password = 5;
+  string token = 6;
+}
+
+
+message findOneRequest {
+  int32 id = 1;
+  string token = 2;
+}
+message createResponse {
+  string msg = 1;
+}
+
+message updateRequest {
+  int32 id = 1;
+  string name = 2;
+  int32 age = 3;
+  string token = 4;
+}
+message updateResponse {
+  string msg = 1;
+}
+
+
+message removeRequest {
+  int32 id = 1;
+  string token = 2;
+}
+message removeResponse {
+  string msg = 1;
+}
+
+
+service AuthService {
+  rpc signIn(signInRequest) returns (signInResponse) {}
+  rpc signUp(signUpRequest) returns (signUpResponse) {}
+}
+message signUpRequest {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  int32 age = 4;
+  string password = 5;
+}
+message signUpResponse {
+  string msg = 1;
+}
+
+
+message signInRequest {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  int32 age = 4;
+  string password = 5;
+}
+message signInResponse {
+  string msg = 1;
+}

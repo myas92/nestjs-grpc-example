@@ -1,0 +1,11 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY ./api-gateway/package.json .
+#RUN npm install --only=prod
+COPY ./api-gateway/ ./
+EXPOSE 3000
+CMD ["npm", "run", "start:dev"]
+
+
